@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashish Kumar | Portfolio</title>
+    <style>
+        /* --- CORE SETTINGS --- */
+        :root {
+            --primary: #00ff88;      /* Neon Green */
+            --secondary: #bd00ff;    /* Neon Purple */
+            --bg: #0a0a0a;           /* Dark Black */
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            perspective: 1000px; /* Essential for 3D */
+        }
+
+        /* --- FLOATING BACKGROUND ORBS --- */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 10s infinite alternate;
+        }
+        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; }
+        .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -100px; right: -100px; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 50px); }
+        }
+
+        /* --- LAYOUT --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Centered for Pro Look */
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, white, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #ccc;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .role-badge {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        /* --- 3D GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 50px 0;
+        }
+
+        /* --- THE 3D CARD --- */
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            transform-style: preserve-3d; /* Allows 3D children */
+            transition: transform 0.1s;    /* Smooth movement */
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* The glowing border effect on hover */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+        }
+
+        .card-content {
+            transform: translateZ(30px); /* Pushes text forward in 3D space */
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 10px; }
+        .card p { color: #aaa; line-height: 1.6; font-size: 0.95rem; margin-bottom: 20px; }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 5px 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            margin-right: 5px;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: white;
+            color: black;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+
+        /* --- MOBILE FIX --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="container">
+        
+        <section class="hero">
+            <span class="role-badge">CYBERSECURITY STUDENT</span>
+            <h1>Ashish Kumar</h1>
+            <p>Designing visuals for brands. Securing networks for the future.</p>
+            <a href="mailto:ashishkhola56@gmail.com" class="btn">Contact Me</a>
+        </section>
+
+        <h2 style="font-size: 2rem; margin-bottom: 20px;">Featured Work</h2>
+        
+        <div class="grid">
+            <div class="card" id="card1">
+                <div class="card-content">
+                    <span style="color: var(--primary); font-size: 3rem;">▶</span>
+                    <h3>PixelVault Media</h3>
+                    <p>My freelance agency. We handle video strategy, branding, and high-retention editing for creators.</p>
+                    <span class="tag">Startup</span>
+                    <span class="tag">Design</span>
+                </div>
+            </div>
+
+            <div class="card" id="card2">
+                <div class="card-content">
+                    <span style="color: var(--secondary); font-size: 3rem;">🛡</span>
+                    <h3>InfoSec Cyber Club</h3>
+                    <p>Core member of the GBU security community. Organizing CTFs and learning network defense.</p>
+                    <span class="tag">Community</span>
+                    <span class="tag">Leadership</span>
+                </div>
+            </div>
+
+            <div class="card" id="card3">
+                <div class="card-content">
+                    <span style="color: white; font-size: 3rem;">📈</span>
+                    <h3>YouTube Growth</h3>
+                    <p>Scaled a channel to 1,000+ subs and Instagram to 4k+ engagement using algorithmic design.</p>
+                    <span class="tag">Analytics</span>
+                    <span class="tag">Growth</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Calculate rotation based on mouse position
+                const xRotation = -((y - rect.height / 2) / 10);
+                const yRotation = (x - rect.width / 2) / 10;
+                
+                // Apply the transformation
+                card.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.02)`;
+            });
+
+            // Reset when mouse leaves
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

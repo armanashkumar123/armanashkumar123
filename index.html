@@ -9,7 +9,7 @@
         :root {
             --primary: #00ff88;      /* Neon Green */
             --secondary: #bd00ff;    /* Neon Purple */
-            --bg: #0a0a0a;           /* Dark Black */
+            --bg: #050505;           /* Deep Black */
             --glass: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.1);
         }
@@ -21,139 +21,168 @@
             color: white;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            perspective: 1000px; /* Essential for 3D */
+            perspective: 1000px;
+            scroll-behavior: smooth; /* Smooth Scrolling */
         }
 
-        /* --- FLOATING BACKGROUND ORBS --- */
+        /* --- BACKGROUND ANIMATION --- */
         .orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(80px);
+            filter: blur(100px);
             z-index: -1;
-            opacity: 0.6;
-            animation: float 10s infinite alternate;
+            opacity: 0.5;
+            animation: float 15s infinite alternate ease-in-out;
         }
-        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; }
-        .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -100px; right: -100px; animation-delay: -5s; }
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: -100px; left: -100px; }
+        .orb-2 { width: 500px; height: 500px; background: var(--secondary); bottom: -150px; right: -150px; animation-delay: -5s; }
 
         @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, 50px); }
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(50px, 50px) rotate(20deg); }
         }
 
         /* --- LAYOUT --- */
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
 
+        /* --- SCROLL REVEAL ANIMATION (The "Best Effect") --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px); /* Starts lower */
+            transition: all 1s ease-out; /* Smooth slide up */
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* --- HERO SECTION --- */
         .hero {
-            height: 80vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center; /* Centered for Pro Look */
+            align-items: center;
             text-align: center;
         }
-        
+
         .hero h1 {
-            font-size: 4rem;
+            font-size: 4.5rem;
             font-weight: 800;
             letter-spacing: -2px;
-            background: linear-gradient(to right, white, #aaa);
+            background: linear-gradient(to bottom right, #fff, #888);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
+            animation: fadeInDown 1.5s ease-out;
         }
 
         .hero p {
-            font-size: 1.5rem;
-            color: #ccc;
-            max-width: 600px;
+            font-size: 1.3rem;
+            color: #aaa;
+            max-width: 700px;
+            line-height: 1.6;
             margin-bottom: 40px;
+            animation: fadeInUp 1.5s ease-out;
         }
 
         .role-badge {
             background: rgba(0, 255, 136, 0.1);
             color: var(--primary);
             border: 1px solid var(--primary);
-            padding: 8px 16px;
+            padding: 8px 20px;
             border-radius: 50px;
             font-size: 0.9rem;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            display: inline-block;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        /* --- SECTIONS --- */
+        .section-title {
+            font-size: 2.5rem;
+            margin-top: 100px;
+            margin-bottom: 40px;
+            border-left: 5px solid var(--secondary);
+            padding-left: 20px;
             display: inline-block;
         }
 
-        /* --- 3D GRID --- */
+        /* --- 3D CARDS --- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
-            padding: 50px 0;
         }
 
-        /* --- THE 3D CARD --- */
         .card {
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 30px;
+            transform-style: preserve-3d;
+            transition: transform 0.1s; /* Instant reaction for mouse */
+            backdrop-filter: blur(15px);
             position: relative;
-            transform-style: preserve-3d; /* Allows 3D children */
-            transition: transform 0.1s;    /* Smooth movement */
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            overflow: hidden;
         }
-
-        /* The glowing border effect on hover */
-        .card::before {
+        
+        /* Glowing border on hover */
+        .card::after {
             content: '';
             position: absolute;
-            inset: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             border-radius: 20px;
-            padding: 2px;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.5;
+            box-shadow: 0 0 20px rgba(0,255,136,0.1);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
+        .card:hover::after { opacity: 1; }
 
-        .card-content {
-            transform: translateZ(30px); /* Pushes text forward in 3D space */
-        }
-
-        .card h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .card p { color: #aaa; line-height: 1.6; font-size: 0.95rem; margin-bottom: 20px; }
-
+        .card h3 { font-size: 1.5rem; margin-bottom: 10px; color: white; }
+        .card p { color: #bbb; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+        
         .tag {
             display: inline-block;
-            font-size: 0.75rem;
-            padding: 5px 12px;
+            font-size: 0.8rem;
+            padding: 6px 12px;
             border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(255,255,255,0.08);
+            color: var(--primary);
             margin-right: 5px;
-            font-weight: 600;
+            margin-bottom: 8px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
         }
+        .tag-sec { color: var(--secondary); border-color: rgba(189, 0, 255, 0.2); }
 
         .btn {
             background: white;
             color: black;
             text-decoration: none;
-            padding: 15px 30px;
+            padding: 15px 35px;
             border-radius: 30px;
             font-weight: bold;
             font-size: 1rem;
-            transition: 0.3s;
+            margin-top: 20px;
             display: inline-block;
+            transition: 0.3s;
         }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+        .btn:hover { 
+            background: var(--primary); 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3); 
+        }
 
-        /* --- MOBILE FIX --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .grid { grid-template-columns: 1fr; }
-        }
+        /* --- FOOTER --- */
+        .social-links { margin-top: 80px; text-align: center; border-top: 1px solid var(--border); padding-top: 40px; padding-bottom: 40px; }
+        .social-links a { color: #888; text-decoration: none; margin: 0 20px; font-size: 1.1rem; transition: 0.3s; }
+        .social-links a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+
+        /* Keyframes for Hero */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
     </style>
 </head>
 <body>
@@ -164,70 +193,124 @@
     <div class="container">
         
         <section class="hero">
-            <span class="role-badge">CYBERSECURITY STUDENT</span>
+            <span class="role-badge">CYBERSECURITY & DESIGN</span>
             <h1>Ashish Kumar</h1>
-            <p>Designing visuals for brands. Securing networks for the future.</p>
-            <a href="mailto:ashishkhola56@gmail.com" class="btn">Contact Me</a>
+            <p>
+                <b>B.Tech Student (CSE)</b> blending the logic of network security with the art of visual storytelling. 
+                Director at PixelVault Media.
+            </p>
+            <div>
+                <a href="mailto:ashishkhola56@gmail.com" class="btn">Email Me</a>
+                <a href="https://github.com/armanashkumar123" class="btn" style="background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3);">GitHub</a>
+            </div>
         </section>
 
-        <h2 style="font-size: 2rem; margin-bottom: 20px;">Featured Work</h2>
-        
+        <h2 class="section-title reveal">Projects</h2>
         <div class="grid">
-            <div class="card" id="card1">
-                <div class="card-content">
-                    <span style="color: var(--primary); font-size: 3rem;">▶</span>
-                    <h3>PixelVault Media</h3>
-                    <p>My freelance agency. We handle video strategy, branding, and high-retention editing for creators.</p>
-                    <span class="tag">Startup</span>
-                    <span class="tag">Design</span>
-                </div>
+            <div class="card reveal">
+                <h3>Encrypted Chat Room</h3>
+                <p>Building a secure communication platform using advanced encryption protocols. Focus on privacy and real-time data security.</p>
+                <span class="tag">Work In Progress</span>
+                <span class="tag">Cybersecurity</span>
+                <span class="tag">Cryptography</span>
             </div>
 
-            <div class="card" id="card2">
-                <div class="card-content">
-                    <span style="color: var(--secondary); font-size: 3rem;">🛡</span>
-                    <h3>InfoSec Cyber Club</h3>
-                    <p>Core member of the GBU security community. Organizing CTFs and learning network defense.</p>
-                    <span class="tag">Community</span>
-                    <span class="tag">Leadership</span>
-                </div>
+            <div class="card reveal">
+                <h3>PixelVault Media</h3>
+                <p>My freelance agency offering video editing and social media strategy. Designed visuals ensuring brand consistency.</p>
+                <span class="tag tag-sec">Startup</span>
+                <span class="tag tag-sec">Design</span>
             </div>
 
-            <div class="card" id="card3">
-                <div class="card-content">
-                    <span style="color: white; font-size: 3rem;">📈</span>
-                    <h3>YouTube Growth</h3>
-                    <p>Scaled a channel to 1,000+ subs and Instagram to 4k+ engagement using algorithmic design.</p>
-                    <span class="tag">Analytics</span>
-                    <span class="tag">Growth</span>
-                </div>
+            <div class="card reveal">
+                <h3>YouTube Growth</h3>
+                <p>Scaled <b>@FactsVault.official</b> to 1,000+ subscribers using algorithmic content strategy and custom thumbnails.</p>
+                <span class="tag tag-sec">1k Subs</span>
+                <span class="tag tag-sec">Analytics</span>
             </div>
+        </div>
+
+        <h2 class="section-title reveal">Education</h2>
+        <div class="grid">
+            <div class="card reveal">
+                <h3>B.Tech (CSE - Cybersecurity)</h3>
+                <p style="color: var(--primary); font-weight: bold;">Gautam Buddha University, Noida</p>
+                <p>2025 - Present | 1st Year</p>
+                <p style="font-size: 0.85rem; margin-top: 5px;">Focus: Network Security, C Programming, Engineering Mathematics.</p>
+            </div>
+            <div class="card reveal">
+                <h3>High School (12th Grade)</h3>
+                <p style="color: var(--secondary); font-weight: bold;">RNS Public School</p>
+                <p>Completed | Science Stream</p>
+            </div>
+        </div>
+
+        <h2 class="section-title reveal">Technical Arsenal</h2>
+        <div class="grid">
+            <div class="card reveal">
+                <h3>Core Tech</h3>
+                <span class="tag">C Programming</span>
+                <span class="tag">Network Security</span>
+                <span class="tag">Electronics Basics</span>
+                <span class="tag">Linux</span>
+            </div>
+            <div class="card reveal">
+                <h3>Creative Tools</h3>
+                <span class="tag tag-sec">Canva (Advanced)</span>
+                <span class="tag tag-sec">Photoshop</span>
+                <span class="tag tag-sec">Figma</span>
+                <span class="tag tag-sec">Video Editing</span>
+            </div>
+        </div>
+
+        <div class="social-links reveal">
+            <a href="https://instagram.com/cheap.games_hub">Instagram</a>
+            <a href="https://github.com/armanashkumar123">GitHub</a>
+            <a href="mailto:ashishkhola56@gmail.com">Email</a>
+            <p style="margin-top: 20px; font-size: 0.8rem; color: #555;">&copy; 2026 Ashish Kumar. Built with Code.</p>
         </div>
 
     </div>
 
     <script>
+        // 1. 3D Tilt Effect
         const cards = document.querySelectorAll('.card');
-
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 
-                // Calculate rotation based on mouse position
-                const xRotation = -((y - rect.height / 2) / 10);
-                const yRotation = (x - rect.width / 2) / 10;
+                // Calculate rotation (Sensitivity 20 for smoother feel)
+                const xRotation = -((y - rect.height / 2) / 20);
+                const yRotation = (x - rect.width / 2) / 20;
                 
-                // Apply the transformation
                 card.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.02)`;
             });
 
-            // Reset when mouse leaves
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
             });
         });
+
+        // 2. Scroll Reveal Animation
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150; // Distance from bottom to trigger
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
     </script>
 </body>
 </html>
